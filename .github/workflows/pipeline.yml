@@ -1,4 +1,4 @@
-name: Build and Unit Test
+name: Build and Test
 
 on:
   push:
@@ -7,11 +7,13 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
     steps:
+    - name: Display my SoftUni username
+      run: echo svetlilaloli
     - name: Checkout repo
       uses: actions/checkout@v4
     - name: Use Node.js 20.x
@@ -21,7 +23,13 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: npm ci
+    - name: Install Playwright browsers
+      run: npx playwright install
     - name: Start the App
       run: npm start &
+    - name: Sleep 5 seconds
+      run: sleep 5
     - name: Run Unit tests
       run: npm run test:unit
+    - name: Run UI tests
+      run: npm run test:ui
